@@ -335,25 +335,28 @@ if __name__ == "__main__":
 
     ################################## Sonar DATASET ########################################################
 
-    # theta = np.array([0.15, 0.11, 0.13, 0.1, 0.1, 0.19, 0.1, 0.19, 0.19, 0.19])
+    theta = np.array([0.15, 0.11, 0.13, 0.1, 0.1, 0.19, 0.1, 0.19, 0.19, 0.19])
+    # sq_dist, sigma, a, J, gradient_value = calculate_parameters(optimal_theta, X, data_sonar_positive, data_sonar_negative)
     # result = optimize.minimize(c_func_opt, theta, method='CG', jac = gradient_value, options={'disp':True}) # hess= None, hessp = None, bounds=None, constraints= cons,
     # print("result: ",result)
     
     # optimal_theta = np.array([0.15, 0.11, 0.13, 0.1, 0.1, 0.19, 0.1, 0.19, 0.19, 0.19])
 
-    #optimal_theta = np.array([0.001, 0.0105, 0.009, 0.1, 0.1, 0.001, 0.009, 0.1, 0.09, 0.1])
+    optimal_theta = np.array([0.001, 0.0105, 0.009, 0.1, 0.1, 0.001, 0.009, 0.1, 0.09, 0.1])
     
     # # [0.10218658, 0.0099456, 0.101839, 0.09814699, 0.10097398, 0.10028149, 0.10410893, 0.0990997 , 0.09132846, 0.09895552])
 
-    # data_sonar = pd.read_csv('~/Documents/Uwaterloo_Study_Docs/ECE_602/Project_final/Dataset/Sonar/sonar.all-data')
-    # data_sonar.rename(columns= {'R': 'Target'}, inplace = True)
-    # data_sonar['Target'] = data_sonar.Target.map({'R':0, 'M':1})
-    # X = data_sonar.iloc[:, 0:60].values
-    # y = data_sonar['Target'].values
-    # data_sonar_positive = data_sonar.loc[(data_sonar['Target'] > 0)]
-    # data_sonar_negative = data_sonar.loc[(data_sonar['Target'] < 1)]
+    data_sonar = pd.read_csv('~/Documents/Uwaterloo_Study_Docs/ECE_602/Project_final/Dataset/Sonar/sonar.all-data')
+    data_sonar.rename(columns= {'R': 'Target'}, inplace = True)
+    data_sonar['Target'] = data_sonar.Target.map({'R':0, 'M':1})
+    X = data_sonar.iloc[:, 0:60].values
+    y = data_sonar['Target'].values
+    data_sonar_positive = data_sonar.loc[(data_sonar['Target'] > 0)]
+    data_sonar_negative = data_sonar.loc[(data_sonar['Target'] < 1)]
 
-    # sq_dist, sigma, a, J, gradient_value = calculate_parameters(optimal_theta, X, data_sonar_positive, data_sonar_negative)
+    sq_dist, sigma, a, J, gradient_value = calculate_parameters(optimal_theta, X, data_sonar_positive, data_sonar_negative)
+    result = optimize.minimize(c_func_opt, theta, method='CG', jac = gradient_value, options={'disp':True}) # hess= None, hessp = None, bounds=None, constraints= cons,
+    print("result: ",result)
 
     # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.30, random_state = 42) 
 
@@ -393,3 +396,20 @@ if __name__ == "__main__":
     # print("acc_score: ", acc_score)
 
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
