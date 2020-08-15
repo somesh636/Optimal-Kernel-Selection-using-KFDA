@@ -26,10 +26,6 @@ def c_func_opt(theta):
         G_list.append(G_g)
         G = np.add(G, G_g)
 
-    print("G: ", G)
-    print("G.shape: ", G.shape)  
-
-    # number of positive sample from the dataset
     m_plus = len(data_pima_positive.index)
     data_pima_positive = data_pima_positive.values
     m_minus = len(data_pima_negative.index)
@@ -158,92 +154,92 @@ def c_func(theta):
     return sq_dist, sigma, a, J, grad
 
 
-def classifier_KFDA(X, X_test, theta, sq_dist, sigma, a, J):
+# def classifier_KFDA(X, X_test, theta, sq_dist, sigma, a, J):
 
-    lambda_val = 10**(-8)
-    # the function is 
+#     lambda_val = 10**(-8)
+#     # the function is 
 
-    # sigma_opt = 
+#     # sigma_opt = 
 
-    # h_x = np.matmul(sigma, K)
-    # sq_dist = pdist(X, 'sqeuclidean')
-    mat_sqr_dist = squareform(sq_dist)
+#     # h_x = np.matmul(sigma, K)
+#     # sq_dist = pdist(X, 'sqeuclidean')
+#     mat_sqr_dist = squareform(sq_dist)
 
-    # print("len of G",len(J))
-    G = 0 
-    for value in range(10):
-        gamma = 1/(sigma[value]**2)
-        # print("gamma_pos: ", gamma)
-        gamma = -gamma 
-        # print("gamma: ", gamma)
-        g = np.exp(gamma * mat_sqr_dist)
-        G_g = theta[value] * g
-        G = np.add(G, G_g)
+#     # print("len of G",len(J))
+#     G = 0 
+#     for value in range(10):
+#         gamma = 1/(sigma[value]**2)
+#         # print("gamma_pos: ", gamma)
+#         gamma = -gamma 
+#         # print("gamma: ", gamma)
+#         g = np.exp(gamma * mat_sqr_dist)
+#         G_g = theta[value] * g
+#         G = np.add(G, G_g)
 
-    # print("G: \n", G)
-    # print("G.shapeeee: ", G.shape)
+#     # print("G: \n", G)
+#     # print("G.shapeeee: ", G.shape)
 
-    I = np.identity(len(J))
-    J_G = np.matmul(J, G)
-    J_G_J = np.matmul(J_G, J)
-    lambda_I = lambda_val * I 
-    # print("lambda_I: \n", lambda_I)
-    # print("lambda_I.shape: ", lambda_I.shape)
-    value_1 = np.add(lambda_I, J_G_J) 
-    # print("value_1: \n", value_1)
-    # print("value_1.shape: ", value_1.shape)
-    inv_value = linalg.inv(value_1)
-    # print("inv_value: \n", inv_value)
-    # print("inv_value.shape: ", inv_value.shape)
+#     I = np.identity(len(J))
+#     J_G = np.matmul(J, G)
+#     J_G_J = np.matmul(J_G, J)
+#     lambda_I = lambda_val * I 
+#     # print("lambda_I: \n", lambda_I)
+#     # print("lambda_I.shape: ", lambda_I.shape)
+#     value_1 = np.add(lambda_I, J_G_J) 
+#     # print("value_1: \n", value_1)
+#     # print("value_1.shape: ", value_1.shape)
+#     inv_value = linalg.inv(value_1)
+#     # print("inv_value: \n", inv_value)
+#     # print("inv_value.shape: ", inv_value.shape)
 
-    J_inv_value = np.matmul(J, inv_value)
-    # print("J_inv_value: \n", J_inv_value)
-    # print("J_inv_value.shape: ", J_inv_value.shape)
-    J_inv_value_J_G = np.matmul(J_inv_value, J_G)
-    substract_value = np.subtract(I, J_inv_value_J_G)
-    # print("substract_value: \n", substract_value)
-    # print("substract_value.shape: ", substract_value.shape)
-    brac_value = np.matmul(substract_value, a)
-    # print("brac_value: \n", brac_value)
-    # print("brac_value.shape: ", brac_value.shape)
-    lambda_inv = (1/lambda_val)
-    alpha_opt_value = lambda_inv * brac_value
-    print("alpha_opt_value: \n", alpha_opt_value)
-    print("alpha_opt_value.shape: ", alpha_opt_value.shape)
+#     J_inv_value = np.matmul(J, inv_value)
+#     # print("J_inv_value: \n", J_inv_value)
+#     # print("J_inv_value.shape: ", J_inv_value.shape)
+#     J_inv_value_J_G = np.matmul(J_inv_value, J_G)
+#     substract_value = np.subtract(I, J_inv_value_J_G)
+#     # print("substract_value: \n", substract_value)
+#     # print("substract_value.shape: ", substract_value.shape)
+#     brac_value = np.matmul(substract_value, a)
+#     # print("brac_value: \n", brac_value)
+#     # print("brac_value.shape: ", brac_value.shape)
+#     lambda_inv = (1/lambda_val)
+#     alpha_opt_value = lambda_inv * brac_value
+#     print("alpha_opt_value: \n", alpha_opt_value)
+#     print("alpha_opt_value.shape: ", alpha_opt_value.shape)
 
-    list_x_ProjValues = []
+#     list_x_ProjValues = []
     
-    list_of_values = []
+#     list_of_values = []
 
-    for index_a in range(len(X_test)): 
-        value_x = 0
-        for index_i in range(len(X)):
-            for index_k in range(10):
-                sigma_squared = np.square(sigma[index_k])
-                value_X_diff = np.linalg.norm(X[index_i] - X_test[index_a])
-                sqaured_value_X_diff = np.square(value_X_diff)
-                # expo_value = -(sqaured_value_X_diff/sigma_squared)
-                expo = np.exp(-(sqaured_value_X_diff/sigma_squared))
-                # print("expo: ",expo)
-                value_theta_k = theta[index_k] * expo 
-                value_x += alpha_opt_value[index_i] * value_theta_k
+#     for index_a in range(len(X_test)): 
+#         value_x = 0
+#         for index_i in range(len(X)):
+#             for index_k in range(10):
+#                 sigma_squared = np.square(sigma[index_k])
+#                 value_X_diff = np.linalg.norm(X[index_i] - X_test[index_a])
+#                 sqaured_value_X_diff = np.square(value_X_diff)
+#                 # expo_value = -(sqaured_value_X_diff/sigma_squared)
+#                 expo = np.exp(-(sqaured_value_X_diff/sigma_squared))
+#                 # print("expo: ",expo)
+#                 value_theta_k = theta[index_k] * expo 
+#                 value_x += alpha_opt_value[index_i] * value_theta_k
 
-        list_of_values.append(value_x)
-        if value_x < 0: 
-            list_x_ProjValues.append(0)
-        else: 
-            list_x_ProjValues.append(1)
+#         list_of_values.append(value_x)
+#         if value_x < 0: 
+#             list_x_ProjValues.append(0)
+#         else: 
+#             list_x_ProjValues.append(1)
     
-    list_of_values = np.array(list_of_values)
-    print("list_of_values: ", list_of_values)
+#     list_of_values = np.array(list_of_values)
+#     print("list_of_values: ", list_of_values)
 
-    # print("list_x_ProjValues: \n",list_x_ProjValues)
-    # print("list_x_ProjValues.shape: ", list_x_ProjValues.shape)
-    list_x_ProjValues = np.array(list_x_ProjValues)
-    print("list_x_ProjValues: \n",list_x_ProjValues)
-    print("list_x_ProjValues.shape: ", list_x_ProjValues.shape)
+#     # print("list_x_ProjValues: \n",list_x_ProjValues)
+#     # print("list_x_ProjValues.shape: ", list_x_ProjValues.shape)
+#     list_x_ProjValues = np.array(list_x_ProjValues)
+#     print("list_x_ProjValues: \n",list_x_ProjValues)
+#     print("list_x_ProjValues.shape: ", list_x_ProjValues.shape)
 
-    return list_x_ProjValues
+#     return list_x_ProjValues
     
 
 def gradient_value(grad):
@@ -281,7 +277,7 @@ if __name__ == "__main__":
     cons = np.append(cons, con1)
     cons = np.append(cons, con2)
 
-    result = optimize.minimize(c_func_opt, theta, method='nelder-mead', constraints= cons, options={'disp':True}) #jac = gradient_value,
+    result = optimize.minimize(c_func_opt, theta, method='Newton-CG', jac = gradient_value, options={'disp':True})   #constraints= cons,
     print(result)
 
     # optimal_theta = np.array([102.5, 102.5, 102.5, 102.5, 102.5, 102.5, 102.5, 102.5, 102.5, 102.5])
